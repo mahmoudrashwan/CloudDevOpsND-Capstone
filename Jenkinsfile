@@ -23,7 +23,7 @@ pipeline {
             steps {
                 sh 'echo "Building Docker Image.."'
                 script {
-                    dockerImage = docker.build registry + ":${tag}"
+                    dockerImage = docker.build registry + ":${tag}" --build-arg token="NGJmZTc1YTA0YmZi" -f
                 }
             }
         }
