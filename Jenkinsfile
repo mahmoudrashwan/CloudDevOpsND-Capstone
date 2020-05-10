@@ -21,7 +21,7 @@ pipeline {
             steps {
                 sh 'echo "Building Docker Image.."'
                 script {
-                    docker.build registry+":$BUILD_NUMBER"
+                    docker.build(registry+":$BUILD_NUMBER")
                 }
             }
         }
