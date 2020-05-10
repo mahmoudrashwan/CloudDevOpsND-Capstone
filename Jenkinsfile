@@ -4,7 +4,7 @@ pipeline {
         stage ('Linting') {
             steps {
                 sh 'echo "Lint html files | python files | Dockerfile"'
-                sh 'make lint'
+                sh 'make all'
             }
         }
     }
