@@ -15,7 +15,7 @@ pipeline {
         }
         stage ('Build Docker Image') {
             steps {
-                sh 'echo "Building Docker Image"'
+                sh 'echo "Building Docker Image.."'
             }
         }
     }
