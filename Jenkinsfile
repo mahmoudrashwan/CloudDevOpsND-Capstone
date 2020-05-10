@@ -13,5 +13,10 @@ pipeline {
                 sh 'make lint'
             }
         }
+        stage ('Build Docker Image') {
+            steps {
+                sh 'echo "Building Docker Image"'
+            }
+        }
     }
 }
