@@ -26,20 +26,13 @@ pipeline {
                 }
             }
         }
-        stage ('Push Image to Dockerhub') {
-            steps {
-                sh 'echo "Pushing Docker Image to DockerHub.."'
-                script {
-                    docker.withRegistry( '', registryCredential ) {
-                        dockerImage.push()
-                    }
-                }
-            }
-        }
+
         stage ('Security Scan') {
             steps {
-                echo "${dockerImage}"
-                aquaMicroscanner imageName: "${dockerImage}", notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
+                tag = "$BUILD_NUMBER"
+                echo tag
+                echo "mahmoudrashwan001/capstone:${tag}"
+                aquaMicroscanner imageName: "mahmoudrashwan001/capstone:${tag}", notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
             }
         }
     }
