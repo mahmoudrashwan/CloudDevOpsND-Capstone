@@ -23,20 +23,11 @@ pipeline {
             steps {
                 sh 'echo "Building Docker Image.."'
                 script {
-                    dockerImage = docker.build registry + ":${tag}" --build-arg token="NGJmZTc1YTA0YmZi" -f
+                    dockerImage = docker.build registry + ":${tag}"
                 }
             }
         }
-        stage ('Push Image to Dockerhub') {
-            steps {
-                sh 'echo "Pushing Docker Image to DockerHub.."'
-                script {
-                    docker.withRegistry( '', registryCredential ) {
-                        dockerImage.push()
-                    }
-                }
-            }
-        }
+
         stage ('Security Scan') {
             steps {
                 aquaMicroscanner imageName: "mahmoudrashwan001/capstone:${tag}", notCompliesCmd: 'exit 4', onDisallowed: 'fail', outputFormat: 'html'
