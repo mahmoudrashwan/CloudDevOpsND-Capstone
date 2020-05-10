@@ -75,6 +75,7 @@ Resources:
                     systemctl start docker
                     docker --version
                     apt install awscli
+                    apt install python3-pip
             KeyName: !Ref JumpKey
             ImageId: !Ref ServersImageId
             InstanceType: !Ref ServersInstanceType
