@@ -29,9 +29,11 @@ pipeline {
 
         stage ('Security Scan') {
             steps {
-                tag = "$BUILD_NUMBER"
-                echo tag
-                echo "mahmoudrashwan001/capstone:${tag}"
+                script{
+                    tag = "$BUILD_NUMBER"
+                }
+                sh 'echo tag'
+                sh 'echo "mahmoudrashwan001/capstone:${tag}"'
                 aquaMicroscanner imageName: "mahmoudrashwan001/capstone:${tag}", notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
             }
         }
