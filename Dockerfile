@@ -1,8 +1,8 @@
-FROM python:rc-alpine3.11
+FROM python:latest
 
-ADD https://get.aquasec.com/microscanner .
-RUN chmod +x microscanner &&\
-    ./microscanner NGJmZTc1YTA0YmZi
+# ADD https://get.aquasec.com/microscanner .
+# RUN chmod +x microscanner &&\
+#     ./microscanner NGJmZTc1YTA0YmZi
 
 ## Step 1:
 WORKDIR /app/
