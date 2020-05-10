@@ -3,7 +3,7 @@ pipeline {
         registry = "mahmoudrashwan001/capstone"
         registryCredential = 'dockerhubcred'
         dockerImage = ''
-        tag = "$BUILD_NUMBER"
+        tag = "1.$BUILD_NUMBER"
     }
     agent any
     stages {
@@ -23,14 +23,23 @@ pipeline {
             steps {
                 sh 'echo "Building Docker Image.."'
                 script {
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    dockerImage = docker.build registry + ":${tag}"
                 }
             }
         }
-
+        stage ('Push Image to Dockerhub') {
+            steps {
+                sh 'echo "Pushing Docker Image to DockerHub.."'
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
         stage ('Security Scan') {
             steps {
-                aquaMicroscanner imageName: "mahmoudrashwan001/capstone:${tag}", notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
+                aquaMicroscanner imageName: "mahmoudrashwan001/capstone:${tag}", notCompliesCmd: 'exit 4', onDisallowed: 'fail', outputFormat: 'html'
             }
         }
     }
