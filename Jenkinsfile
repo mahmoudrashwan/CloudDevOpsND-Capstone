@@ -1,4 +1,8 @@
 pipeline {
+    environment {
+        registry = "mahmoudrashwan001/capstone"
+        dockerhubCredentials = 'dockerhubcred'
+    }
     agent any
     stages {
         stage ('Updating dependencies') {
@@ -16,6 +20,14 @@ pipeline {
         stage ('Build Docker Image') {
             steps {
                 sh 'echo "Building Docker Image.."'
+                script {
+                    docker.build registry+":$BUILD_NUMBER"
+                }
+            }
+        }
+        stage ('Security Scan') {
+            steps {
+                aquaMicroscanner imageName: registry+":$BUILD_NUMBER", notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
             }
         }
     }
