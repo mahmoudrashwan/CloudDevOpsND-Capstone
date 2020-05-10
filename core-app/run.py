@@ -6,7 +6,7 @@ Copyright (c) 2019 - present AppSeed.us
 
 from flask_migrate import Migrate
 from os import environ
-from sys import exit
+#from sys import exit
 
 from config import config_dict
 from app import create_app, db
@@ -23,4 +23,4 @@ Migrate(app, db)
 
 if __name__ == "__main__":
     from waitress import serve
-    serve(app, host="0.0.0.0", port=8000)
+    serve(app, host="0.0.0.0", port=80)

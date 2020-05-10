@@ -6,3 +6,4 @@ flask_sqlalchemy
 email_validator
 gunicorn
 waitress
+pylint

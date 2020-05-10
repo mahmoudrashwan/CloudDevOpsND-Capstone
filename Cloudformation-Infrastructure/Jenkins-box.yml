@@ -1,0 +1,104 @@
+Description: >
+    CloudDevOps Capstone,
+    This is the template to create Stack for Jenkins-box
+    Created by: Mahmoud Rashwan | May, 2020.
+
+Parameters:
+    EnvName:
+        Description: Environment Name used by and whithin Stacks.
+        Type: String
+    JumpKey:
+        Description: SSH Key for Access JumpBox
+        Type: String
+    ServersInstanceType:
+        Description: Instance Type | Using Default for testing only
+        Type: String
+        Default: t2.micro
+    ServersImageId:
+        Description: Servers ImageId | Default is Ubuntu 18.04
+        Type: String
+        Default: ami-005bdb005fb00e791
+    OwnIP:
+        Description: source ip to access server over ssh or web.
+        Type: String
+
+Resources:
+    JenkinsSG:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            GroupDescription: SG for Jenkins Server.
+            VpcId:
+                Fn::ImportValue:
+                    !Sub "${EnvName}-VPC"
+            SecurityGroupEgress:
+                - IpProtocol: tcp
+                  FromPort: 0
+                  ToPort: 65535
+                  CidrIp: 0.0.0.0/0
+            SecurityGroupIngress:
+                - IpProtocol: tcp
+                  FromPort: 8080
+                  ToPort: 8080
+                  CidrIp: 0.0.0.0/0
+                - IpProtocol: tcp
+                  FromPort: 22
+                  ToPort: 22
+                  CidrIp: !Ref OwnIP
+            Tags:
+                - Key: Name
+                  Value: !Sub ${EnvName}-JenkinsSG
+    JenkinsServer:
+        Type: AWS::EC2::Instance
+        Properties:
+            SecurityGroupIds:
+                - Ref: JenkinsSG
+            UserData:
+                Fn::Base64: !Sub |
+                    #!/bin/bash
+                    sudo su
+                    export DEBIAN_FRONTEND=noninteractive
+                    apt update -y
+                    apt install default-jdk wget -y
+                    cd /home/ubuntu
+                    wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
+                    sudo sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
+                    apt update -y
+                    apt install jenkins tidy -y
+                    systemctl start jenkins
+                    sudo systemctl enable jenkins
+                    systemctl status jenkins
+                    wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.17.6/hadolint-Linux-x86_64 && sudo chmod +x /bin/hadolint
+                    curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+                    chmod +x ./kubectl && mv ./kubectl /usr/local/bin/kubectl
+                    kubectl version --client
+                    apt install -y docker.io
+                    systemctl start docker
+                    docker --version
+                    apt install awscli
+            KeyName: !Ref JumpKey
+            ImageId: !Ref ServersImageId
+            InstanceType: !Ref ServersInstanceType
+            BlockDeviceMappings:
+                - DeviceName: "/dev/sdk"
+                  Ebs:
+                    VolumeSize: "10"
+            SubnetId:
+                Fn::ImportValue: !Sub "${EnvName}-PublicSubnet1"
+    EIP:
+        Type: AWS::EC2::EIP
+        Properties:
+            Domain:
+              Fn::ImportValue: !Sub "${EnvName}-VPC"
+    JenkinsEIPAssociation:
+        Type: AWS::EC2::EIPAssociation
+        DependsOn:
+            - JenkinsServer
+            - EIP
+        Properties:
+            InstanceId: !Ref JenkinsServer
+            AllocationId: !GetAtt EIP.AllocationId
+
+Outputs:
+  JenkinsServer:
+    Description: The FQDN for Jenkins Server
+    Value: !Join ['', ['http://', !GetAtt 'JenkinsServer.PublicDnsName', ':8080']]

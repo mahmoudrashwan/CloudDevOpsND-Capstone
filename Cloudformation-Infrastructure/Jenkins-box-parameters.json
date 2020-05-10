@@ -1,0 +1,23 @@
+[
+    {
+        "ParameterKey": "EnvName",
+        "ParameterValue": "CapstoneProject"
+    },
+    {
+        "ParameterKey": "JumpKey",
+        "ParameterValue": "JumpKey"
+    },
+    {
+        "ParameterKey": "ServersInstanceType",
+        "ParameterValue": "t3.medium"
+    },
+    {
+        "ParameterKey": "ServersImageId",
+        "ParameterValue": "ami-018c24e857e0eeb79"
+    },
+    {
+        "ParameterKey": "OwnIP",
+        "ParameterValue": "41.176.212.80/32"
+    }
+]
+
