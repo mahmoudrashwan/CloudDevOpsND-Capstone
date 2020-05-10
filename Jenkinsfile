@@ -27,7 +27,7 @@ pipeline {
         }
         stage ('Security Scan') {
             steps {
-                aquaMicroscanner imageName: registry+":$BUILD_NUMBER", notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
+                aquaMicroscanner imageName: "mahmoudrashwan001/capstone:$BUILD_NUMBER", notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
             }
         }
     }
