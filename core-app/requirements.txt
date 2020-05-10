@@ -5,3 +5,4 @@ flask_wtf
 flask_sqlalchemy
 email_validator
 gunicorn
+waitress
