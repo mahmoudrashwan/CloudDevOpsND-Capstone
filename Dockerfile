@@ -1,8 +1,4 @@
-FROM python:3.7.7-buster
-
-# ADD https://get.aquasec.com/microscanner .
-# RUN chmod +x microscanner &&\
-#     ./microscanner NGJmZTc1YTA0YmZi
+FROM python:3.7.3-stretch
 
 ## Step 1:
 WORKDIR /app/

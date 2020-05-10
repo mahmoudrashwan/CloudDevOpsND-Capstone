@@ -28,10 +28,5 @@ pipeline {
             }
         }
 
-        stage ('Security Scan') {
-            steps {
-                aquaMicroscanner imageName: "mahmoudrashwan001/capstone:${tag}", notCompliesCmd: 'exit 4', onDisallowed: 'fail', outputFormat: 'html'
-            }
-        }
     }
 }
