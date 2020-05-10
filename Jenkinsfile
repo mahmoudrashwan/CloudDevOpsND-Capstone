@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage stage ('Updating dependencies') {
+        stage ('Updating dependencies') {
             steps {
                 sh 'echo "Updating python dependencies"'
                 sh 'make install'
