@@ -23,11 +23,12 @@ pipeline {
                 script {
                     docker.build(registry+":$BUILD_NUMBER")
                 }
+                sh 'docker images ls'
             }
         }
         stage ('Security Scan') {
             steps {
-                aquaMicroscanner imageName: 'mahmoudrashwan001/capstone:$BUILD_NUMBER', notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
+                aquaMicroscanner imageName: "mahmoudrashwan001/capstone:${BUILD_NUMBER}", notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
             }
         }
     }
