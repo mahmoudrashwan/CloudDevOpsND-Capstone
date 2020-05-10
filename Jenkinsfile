@@ -1,15 +1,15 @@
 pipeline {
     agent any
     stages {
-        stage ('Linting') {
+        stage ('Update dependencies') {
             steps {
-                sh 'echo "Lint html files | python files | Dockerfile"'
-                sh 'make all'
+                sh 'echo "Updating python dependencies"'
+                sh 'make install'
             }
         stage ('Linting') {
             steps {
                 sh 'echo "Lint html files | python files | Dockerfile"'
-                sh 'make all'
+                sh 'make lint'
             }
         }
     }

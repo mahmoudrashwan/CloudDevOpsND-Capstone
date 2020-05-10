@@ -12,7 +12,7 @@ test:
 	#Currently, there is no tests available as it's just a demo.
 lint:
 	#lint Html
-	tidy -q -e core-app/app/home/templates/
+	tidy -q -e core-app/app/home/templates/index.html
 	#lint Dockerfile
 	hadolint --ignore=DL3013 Dockerfile
 	# lint python files
