@@ -175,9 +175,9 @@ Resources:
     WorkerNodeAutoScalingGroup:
         Type: AWS::AutoScaling::AutoScalingGroup
         Properties:
-            DesiredCapacity: 2
+            DesiredCapacity: 4
             LaunchConfigurationName: !Ref WorkerNodeLaunchConfig
-            MinSize: 2
+            MinSize: 4
             MaxSize: 4
             VPCZoneIdentifier:
                 -   Fn::ImportValue: !Sub "${EnvName}-PublicSubnet1"
