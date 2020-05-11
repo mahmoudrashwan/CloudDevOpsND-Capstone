@@ -157,7 +157,7 @@ Resources:
                 Fn::Base64: !Sub |
                     #!/bin/bash
                     set -o xtrace
-                    /etc/eks/bootstrap.sh ${ClusterName} --kubelet-extra-args --node-labels=nodetype=worker
+                    /etc/eks/bootstrap.sh ${ClusterName}
                     /opt/aws/bin/cfn-signal --exit-code $? \
                              --stack  ${AWS::StackName} \
                              --resource NodeGroup  \
@@ -189,6 +189,11 @@ Resources:
                 -  Key: !Sub kubernetes.io/cluster/${ClusterName}
                    PropagateAtLaunch: "true"
                    Value: priv
+        UpdatePolicy:
+            AutoScalingRollingUpdate:
+                MaxBatchSize: "1"
+                MinInstancesInService: 1
+                PauseTime: PT5M
 Outputs:
     WorkNodesIAMRoleArn:
         Description: Worker node Instance role ARN for using in configuration map.
