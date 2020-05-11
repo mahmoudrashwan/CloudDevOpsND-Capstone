@@ -1,4 +1,4 @@
-FROM python:3.7.3-stretch
+FM python:3.7.3-stretch
 
 ## Step 1:
 WORKDIR /app/
