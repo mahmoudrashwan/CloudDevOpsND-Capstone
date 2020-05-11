@@ -23,10 +23,19 @@ pipeline {
             steps {
                 sh 'echo "Building Docker Image.."'
                 script {
-                    dockerImage = docker.build registry + ":${tag}"
+                    dockerImage = docker.build registry
                 }
             }
         }
-
+        stage ('Push Image to Dockerhub') {
+            steps {
+                sh 'echo "Pushing Docker Image to DockerHub.."'
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
     }
 }
