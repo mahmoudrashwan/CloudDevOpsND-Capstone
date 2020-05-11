@@ -1,0 +1,22 @@
+[
+    {
+        "ParameterKey": "EnvName",
+        "ParameterValue": "CapstoneProject"
+    },
+    {
+        "ParameterKey": "JumpKey",
+        "ParameterValue": "JumpKey"
+    },
+    {
+        "ParameterKey": "NodeInstanceType",
+        "ParameterValue": "t2.medium"
+    },
+    {
+        "ParameterKey": "NodeAMI",
+        "ParameterValue": "ami-011c865bf7da41a9d"
+    },
+    {
+        "ParameterKey": "ClusterName",
+        "ParameterValue": "DevOpsCluster"
+    }
+]
